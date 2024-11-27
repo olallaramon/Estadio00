@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diseño de Estadio</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        canvas {
+            border: 2px solid #000;
+            background-color: #1b7f33;
+        }
+
+        .controls {
+            margin-top: 20px;
+        }
+
+        .button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="stadiumCanvas" width="800" height="600"></canvas>
+    <div class="controls">
+        <button class="button" id="addSeatingButton">Añadir Gradas</button>
+        <button class="button" id="clearButton">Limpiar Estadio</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById("stadiumCanvas");
+        const ctx = canvas.getContext("2d");
+
+        // Elementos del estadio
+        let stadiumElements = [];
+
+        function drawField() {
+            // Dibuja el campo de fútbol
+            ctx.fillStyle = "#009900";
+            ctx.fillRect(150, 100, 500, 400);
+            ctx.fillStyle = "white";
+            ctx.strokeRect(150, 100, 500, 400); // Líneas del campo
+            ctx.beginPath();
+            ctx.arc(400, 300, 50, 0, 2 * Math.PI); // Centro del campo
+            ctx.stroke();
+        }
+
+        function drawSeating(x, y) {
+            ctx.fillStyle = "blue";
+            ctx.fillRect(x, y, 100, 20); // Grada simple
+        }
+
+        function render() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpiar el lienzo
+            drawField();
+            stadiumElements.forEach(element => {
+                if (element.type === "seating") {
+                    drawSeating(element.x, element.y);
+                }
+            });
+        }
+
+        document.getElementById("addSeatingButton").addEventListener("click", function() {
+            stadiumElements.push({type: "seating", x: 250, y: 120});
+            render();
+        });
+
+        document.getElementById("clearButton").addEventListener("click", function() {
+            stadiumElements = [];
+            render();
+        });
+
+        // Inicializa la vista
+        render();
+    </script>
+</body>
+</html>
